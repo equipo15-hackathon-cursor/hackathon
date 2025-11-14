@@ -1,11 +1,655 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hackathon Madrid</title>
+    <title>Torneo de Conocimiento</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d3561 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            font-weight: 400;
+        }
+
+        .progress-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        .progress-line {
+            width: 100px;
+            height: 2px;
+            background: #475569;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            z-index: 0;
+        }
+
+        .progress-step:not(:last-child) .progress-line {
+            display: block;
+        }
+
+        .progress-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .progress-circle.active {
+            background: #3b82f6;
+            color: #ffffff;
+        }
+
+        .progress-circle.inactive {
+            background: #475569;
+            color: #94a3b8;
+        }
+
+        .progress-label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-align: center;
+        }
+
+        .phase-info {
+            width: 100%;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .phase-title {
+            font-size: 2rem;
+            color: #3b82f6;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .phase-instructions {
+            font-size: 1rem;
+            color: #cbd5e1;
+            margin-bottom: 15px;
+        }
+
+        .score-box {
+            display: inline-block;
+            background: #1e3a8a;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: #60a5fa;
+            margin-bottom: 15px;
+        }
+
+        .question-counter {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .question-panel {
+            width: 100%;
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            color: #ffffff;
+            text-align: center;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .answers-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .answer-button {
+            background: #334155;
+            border: none;
+            border-radius: 8px;
+            padding: 18px 20px;
+            font-size: 1rem;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .answer-button:hover {
+            background: #475569;
+            transform: translateX(5px);
+        }
+
+        .answer-button.selected {
+            background: #3b82f6;
+        }
+
+        .answer-button.correct {
+            background: #10b981;
+        }
+
+        .answer-button.incorrect {
+            background: #ef4444;
+        }
+
+        .answer-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .fun-fact {
+            margin-top: 20px;
+            padding: 15px;
+            background: #0f172a;
+            border-left: 4px solid #3b82f6;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            display: none;
+        }
+
+        .fun-fact.show {
+            display: block;
+        }
+
+        .footer {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .restart-button {
+            background: #334155;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 30px;
+            font-size: 1rem;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .restart-button:hover {
+            background: #475569;
+        }
+
+        .next-button {
+            background: #3b82f6;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 30px;
+            font-size: 1rem;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 15px;
+        }
+
+        .next-button:hover {
+            background: #2563eb;
+        }
+
+        .next-button:disabled {
+            background: #475569;
+            cursor: not-allowed;
+        }
+
+        .phase-complete {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .phase-complete h2 {
+            font-size: 2rem;
+            color: #10b981;
+            margin-bottom: 15px;
+        }
+
+        .phase-complete p {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .phase-failed {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .phase-failed h2 {
+            font-size: 2rem;
+            color: #ef4444;
+            margin-bottom: 15px;
+        }
+
+        .phase-failed p {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+
+            .phase-title {
+                font-size: 1.5rem;
+            }
+
+            .question-text {
+                font-size: 1.1rem;
+            }
+
+            .progress-line {
+                width: 60px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Hackathon Madrid</h1>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Torneo de Conocimiento</h1>
+            <p class="subtitle">Supera cada fase respondiendo correctamente</p>
+        </div>
+
+        <div class="progress-container" id="progressContainer"></div>
+
+        <div class="phase-info" id="phaseInfo">
+            <div class="phase-title" id="phaseTitle"></div>
+            <div class="phase-instructions" id="phaseInstructions"></div>
+            <div class="score-box" id="scoreBox"></div>
+            <div class="question-counter" id="questionCounter"></div>
+        </div>
+
+        <div class="question-panel" id="questionPanel">
+            <div class="question-text" id="questionText"></div>
+            <div class="answers-container" id="answersContainer"></div>
+            <div class="fun-fact" id="funFact"></div>
+            <button class="next-button" id="nextButton" style="display: none;">Siguiente</button>
+        </div>
+
+        <div class="footer">
+            <button class="restart-button" id="restartButton">Reiniciar Torneo</button>
+        </div>
+    </div>
+
+    <script>
+        let quizData = null;
+        let currentPhaseIndex = 0;
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+        let selectedAnswer = null;
+        let phaseResults = [];
+
+        // Load quiz data
+        async function loadQuizData() {
+            try {
+                const response = await fetch('world_cup_quiz_structure.json');
+                quizData = await response.json();
+                initializeQuiz();
+            } catch (error) {
+                console.error('Error loading quiz data:', error);
+                document.getElementById('questionText').textContent = 'Error al cargar los datos del quiz';
+            }
+        }
+
+        function initializeQuiz() {
+            currentPhaseIndex = 0;
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            selectedAnswer = null;
+            phaseResults = [];
+            renderProgress();
+            renderPhase();
+        }
+
+        function renderProgress() {
+            const container = document.getElementById('progressContainer');
+            container.innerHTML = '';
+
+            // Show main phases: Fase de Grupos, Semifinales, Final
+            const mainPhases = [
+                { name: 'Fase', phaseId: 'group_stage' },
+                { name: 'Semifinales', phaseId: 'semi_finals' },
+                { name: 'Final', phaseId: 'final' }
+            ];
+
+            mainPhases.forEach((phase, index) => {
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'progress-step';
+
+                const phaseIndex = quizData.phases.findIndex(p => p.id === phase.phaseId);
+                const isActive = phaseIndex <= currentPhaseIndex && phaseIndex !== -1;
+                const isCompleted = phaseIndex < currentPhaseIndex;
+
+                const circle = document.createElement('div');
+                circle.className = `progress-circle ${isActive ? 'active' : 'inactive'}`;
+                circle.textContent = index + 1;
+
+                const label = document.createElement('div');
+                label.className = 'progress-label';
+                label.textContent = phase.name;
+
+                if (index < mainPhases.length - 1) {
+                    const line = document.createElement('div');
+                    line.className = 'progress-line';
+                    stepDiv.appendChild(line);
+                }
+
+                stepDiv.appendChild(circle);
+                stepDiv.appendChild(label);
+                container.appendChild(stepDiv);
+            });
+        }
+
+        function renderPhase() {
+            if (!quizData || currentPhaseIndex >= quizData.phases.length) {
+                showTournamentComplete();
+                return;
+            }
+
+            const phase = quizData.phases[currentPhaseIndex];
+            const currentQuestion = phase.questions[currentQuestionIndex];
+
+            // Update phase info
+            document.getElementById('phaseTitle').textContent = phase.name;
+            
+            // Calculate pass requirement
+            const passReq = calculatePassRequirement(phase);
+            document.getElementById('phaseInstructions').textContent = 
+                `Responde correctamente ${passReq.required} de ${phase.questions.length} preguntas para avanzar a ${getNextPhaseName()}`;
+
+            // Update score
+            const required = passReq.required;
+            document.getElementById('scoreBox').textContent = 
+                `Correctas: ${correctAnswers} / Requeridas: ${required}`;
+
+            // Update question counter
+            document.getElementById('questionCounter').textContent = 
+                `Pregunta ${currentQuestionIndex + 1} de ${phase.questions.length}`;
+
+            // Render question
+            renderQuestion(currentQuestion);
+
+            selectedAnswer = null;
+            document.getElementById('nextButton').style.display = 'none';
+            document.getElementById('funFact').classList.remove('show');
+        }
+
+        function calculatePassRequirement(phase) {
+            if (phase.pass_condition === 'must_answer_correct') {
+                return { required: phase.questions.length, type: 'all' };
+            } else if (phase.pass_condition === 'min_2_of_3_correct') {
+                return { required: 2, type: 'min' };
+            } else if (phase.pass_condition.startsWith('min_')) {
+                // Parse patterns like "min_X_of_Y_correct"
+                const match = phase.pass_condition.match(/min_(\d+)_of_(\d+)_correct/);
+                if (match) {
+                    return { required: parseInt(match[1]), type: 'min' };
+                }
+            }
+            // Default: need all correct
+            return { required: phase.questions.length, type: 'all' };
+        }
+
+        function getNextPhaseName() {
+            if (currentPhaseIndex + 1 < quizData.phases.length) {
+                const nextPhase = quizData.phases[currentPhaseIndex + 1];
+                if (nextPhase.id === 'semi_finals') {
+                    return 'Semifinales';
+                } else if (nextPhase.id === 'final') {
+                    return 'Final';
+                }
+                return nextPhase.name;
+            }
+            return 'la siguiente fase';
+        }
+
+        function renderQuestion(question) {
+            document.getElementById('questionText').textContent = question.question;
+            
+            const answersContainer = document.getElementById('answersContainer');
+            answersContainer.innerHTML = '';
+
+            if (question.type === 'choice') {
+                question.options.forEach((option, index) => {
+                    const button = document.createElement('button');
+                    button.className = 'answer-button';
+                    button.textContent = option;
+                    button.onclick = () => selectAnswer(index, question);
+                    answersContainer.appendChild(button);
+                });
+            } else if (question.type === 'open') {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'answer-button';
+                input.placeholder = 'Escribe tu respuesta...';
+                input.style.background = '#334155';
+                input.style.border = 'none';
+                input.style.borderRadius = '8px';
+                input.style.padding = '18px 20px';
+                input.style.fontSize = '1rem';
+                input.style.color = '#ffffff';
+                input.onkeypress = (e) => {
+                    if (e.key === 'Enter') {
+                        checkOpenAnswer(input.value, question);
+                    }
+                };
+                answersContainer.appendChild(input);
+            }
+        }
+
+        function selectAnswer(index, question) {
+            if (selectedAnswer !== null) return;
+
+            selectedAnswer = index;
+            const buttons = document.querySelectorAll('.answer-button');
+            buttons[index].classList.add('selected');
+
+            // Check answer
+            const isCorrect = index === question.correct_index;
+            if (isCorrect) {
+                correctAnswers++;
+                buttons[index].classList.add('correct');
+            } else {
+                buttons[index].classList.add('incorrect');
+                if (question.correct_index !== undefined) {
+                    buttons[question.correct_index].classList.add('correct');
+                }
+            }
+
+            // Disable all buttons
+            buttons.forEach(btn => btn.disabled = true);
+
+            // Show fun fact
+            if (question.fun_fact) {
+                document.getElementById('funFact').textContent = question.fun_fact;
+                document.getElementById('funFact').classList.add('show');
+            }
+
+            // Show next button
+            document.getElementById('nextButton').style.display = 'block';
+            document.getElementById('nextButton').onclick = nextQuestion;
+
+            // Update score
+            const phase = quizData.phases[currentPhaseIndex];
+            const passReq = calculatePassRequirement(phase);
+            document.getElementById('scoreBox').textContent = 
+                `Correctas: ${correctAnswers} / Requeridas: ${passReq.required}`;
+        }
+
+        function checkOpenAnswer(answer, question) {
+            if (selectedAnswer !== null) return;
+
+            const normalizedAnswer = answer.trim().toLowerCase();
+            const isCorrect = question.acceptable_answers.some(
+                acc => acc.toLowerCase() === normalizedAnswer
+            );
+
+            selectedAnswer = isCorrect ? 'correct' : 'incorrect';
+            
+            const input = document.querySelector('input.answer-button');
+            if (isCorrect) {
+                correctAnswers++;
+                input.style.background = '#10b981';
+            } else {
+                input.style.background = '#ef4444';
+            }
+            input.disabled = true;
+
+            // Show fun fact
+            if (question.fun_fact) {
+                document.getElementById('funFact').textContent = question.fun_fact;
+                document.getElementById('funFact').classList.add('show');
+            }
+
+            // Show next button
+            document.getElementById('nextButton').style.display = 'block';
+            document.getElementById('nextButton').onclick = nextQuestion;
+
+            // Update score
+            const phase = quizData.phases[currentPhaseIndex];
+            const passReq = calculatePassRequirement(phase);
+            document.getElementById('scoreBox').textContent = 
+                `Correctas: ${correctAnswers} / Requeridas: ${passReq.required}`;
+        }
+
+        function nextQuestion() {
+            const phase = quizData.phases[currentPhaseIndex];
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex >= phase.questions.length) {
+                // Phase complete - check if passed
+                checkPhaseCompletion();
+            } else {
+                renderPhase();
+            }
+        }
+
+        function checkPhaseCompletion() {
+            const phase = quizData.phases[currentPhaseIndex];
+            const passReq = calculatePassRequirement(phase);
+            const passed = correctAnswers >= passReq.required;
+
+            phaseResults.push({ phase: phase.name, passed, correctAnswers, required: passReq.required });
+
+            if (passed) {
+                // Move to next phase
+                currentPhaseIndex++;
+                currentQuestionIndex = 0;
+                correctAnswers = 0;
+
+                if (currentPhaseIndex >= quizData.phases.length) {
+                    showTournamentComplete();
+                } else {
+                    renderProgress();
+                    renderPhase();
+                }
+            } else {
+                showPhaseFailed();
+            }
+        }
+
+        function showPhaseFailed() {
+            const phase = quizData.phases[currentPhaseIndex];
+            const passReq = calculatePassRequirement(phase);
+            
+            document.getElementById('questionPanel').innerHTML = `
+                <div class="phase-failed">
+                    <h2>Fase Fallida</h2>
+                    <p>No has alcanzado el mínimo requerido de respuestas correctas.</p>
+                    <p>Correctas: ${correctAnswers} / Requeridas: ${passReq.required}</p>
+                    <button class="restart-button" onclick="initializeQuiz()">Reiniciar Torneo</button>
+                </div>
+            `;
+        }
+
+        function showTournamentComplete() {
+            document.getElementById('questionPanel').innerHTML = `
+                <div class="phase-complete">
+                    <h2>¡Felicidades!</h2>
+                    <p>Has completado el Torneo de Conocimiento exitosamente.</p>
+                    <button class="restart-button" onclick="initializeQuiz()">Reiniciar Torneo</button>
+                </div>
+            `;
+        }
+
+        // Initialize on load
+        document.getElementById('restartButton').onclick = initializeQuiz;
+        loadQuizData();
+    </script>
 </body>
 </html>
