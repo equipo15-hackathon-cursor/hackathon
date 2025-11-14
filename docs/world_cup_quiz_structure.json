@@ -1,0 +1,165 @@
+{
+  "phases": [
+    {
+      "id": "group_stage",
+      "name": "Fase de Grupos",
+      "pass_condition": "min_2_of_3_correct",
+      "questions": [
+        {
+          "id": "GS1",
+          "category": "Potencias y Cenicientas",
+          "difficulty": "Fácil",
+          "type": "choice",
+          "question": "¿Qué selección ganó el primer Mundial de la historia en 1930?",
+          "options": [
+            "Uruguay",
+            "Argentina",
+            "Brasil",
+            "Italia"
+          ],
+          "correct_index": 0,
+          "fun_fact": "Uruguay organizó el torneo y se proclamó campeón en el Estadio Centenario de Montevideo."
+        },
+        {
+          "id": "GS2",
+          "category": "Personajes",
+          "difficulty": "Medio",
+          "type": "choice",
+          "question": "¿Qué jugador colombiano marcó de volea a Uruguay en 2014 el gol elegido como el mejor del torneo?",
+          "options": [
+            "Radamel Falcao",
+            "James Rodríguez",
+            "Juan Cuadrado",
+            "Carlos Bacca"
+          ],
+          "correct_index": 1,
+          "fun_fact": "Ese gol de volea fue tan brutal que la FIFA lo nombró el mejor tanto del Mundial 2014."
+        },
+        {
+          "id": "GS3",
+          "category": "Fuera del Césped",
+          "difficulty": "Difícil",
+          "type": "choice",
+          "question": "¿En qué Mundial se estrenó el polémico balón Jabulani?",
+          "options": [
+            "2002 (Corea/Japón)",
+            "2006 (Alemania)",
+            "2010 (Sudáfrica)",
+            "2014 (Brasil)"
+          ],
+          "correct_index": 2,
+          "fun_fact": "Muchos porteros dijeron que el Jabulani flotaba tanto que parecía un globo de playa."
+        }
+      ]
+    },
+    {
+      "id": "round_of_32",
+      "name": "Round of 32",
+      "pass_condition": "must_answer_correct",
+      "questions": [
+        {
+          "id": "R32_1",
+          "category": "Fuera del Césped",
+          "difficulty": "Fácil",
+          "type": "choice",
+          "question": "¿En qué país se jugó el Mundial 2014, el del 7–1 a la anfitriona?",
+          "options": [
+            "Brasil",
+            "Alemania",
+            "Sudáfrica",
+            "Rusia"
+          ],
+          "correct_index": 0,
+          "fun_fact": "En ese Mundial, Alemania firmó el 7–1 ante Brasil y luego ganó la final en Río."
+        }
+      ]
+    },
+    {
+      "id": "round_of_16",
+      "name": "Round of 16",
+      "pass_condition": "must_answer_correct",
+      "questions": [
+        {
+          "id": "R16_1",
+          "category": "Potencias y Cenicientas",
+          "difficulty": "Medio",
+          "type": "choice",
+          "question": "En Brasil 2014, ¿qué 'cenicienta' lideró un grupo con Uruguay, Italia e Inglaterra?",
+          "options": [
+            "México",
+            "Costa Rica",
+            "Estados Unidos",
+            "Grecia"
+          ],
+          "correct_index": 1,
+          "fun_fact": "A Costa Rica la daban por eliminada… y se fue del Mundial cayendo solo en penaltis de cuartos."
+        }
+      ]
+    },
+    {
+      "id": "quarter_finals",
+      "name": "Quarter Finals",
+      "pass_condition": "must_answer_correct",
+      "questions": [
+        {
+          "id": "QF1",
+          "category": "Personajes",
+          "difficulty": "Medio",
+          "type": "choice",
+          "question": "¿Qué jugador alemán superó el récord histórico de goles de Ronaldo Nazário en Mundiales durante Brasil 2014?",
+          "options": [
+            "Thomas Müller",
+            "Mesut Özil",
+            "Bastian Schweinsteiger",
+            "Miroslav Klose"
+          ],
+          "correct_index": 3,
+          "fun_fact": "Con su gol ante Brasil, Klose llegó a 16 tantos y se convirtió en el máximo goleador de la historia de los Mundiales."
+        }
+      ]
+    },
+    {
+      "id": "semi_finals",
+      "name": "Semi Finals",
+      "pass_condition": "must_answer_correct",
+      "questions": [
+        {
+          "id": "SF1",
+          "category": "Potencias y Cenicientas",
+          "difficulty": "Difícil",
+          "type": "choice",
+          "question": "¿Qué selección africana derrotó 1–0 a la campeona Argentina en el partido inaugural de Italia 1990?",
+          "options": [
+            "Nigeria",
+            "Camerún",
+            "Marruecos",
+            "Senegal"
+          ],
+          "correct_index": 1,
+          "fun_fact": "Camerún abrió el torneo derribando a la campeona y acabó llegando hasta cuartos de final."
+        }
+      ]
+    },
+    {
+      "id": "final",
+      "name": "Final",
+      "pass_condition": "must_answer_correct",
+      "questions": [
+        {
+          "id": "FINAL1",
+          "category": "Potencias y Cenicientas",
+          "difficulty": "Muy difícil",
+          "type": "open",
+          "question": "¿Qué selección perdió la final del Mundial 1954 en un partido conocido como 'El Milagro de Berna'?",
+          "expected_answer": "Hungría",
+          "acceptable_answers": [
+            "Hungría",
+            "Hungary",
+            "Hungria"
+          ],
+          "fun_fact": "Hungría llevaba cuatro años invicta y era considerada imbatible hasta que Alemania Federal remontó 3–2 en la final."
+        }
+      ]
+    }
+  ]
+}
